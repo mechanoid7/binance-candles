@@ -1,0 +1,15 @@
+<!--<highcharts-chart style="width: 100%; display: block"-->
+<!--                  [Highcharts]="Highcharts"-->
+<!--                  [constructorType]="'stockChart'"-->
+<!--                  [options]="chartOptions">-->
+<!--</highcharts-chart>-->
+
+
+<highcharts-chart
+  [Highcharts]="Highcharts"
+  [constructorType]="'stockChart'"
+  [options]="options"
+  [callbackFunction]="callback"
+  [(update)]="updateDemo2"
+  (chartInstance)="saveInstance($event)"
+></highcharts-chart>
