@@ -178,14 +178,14 @@ export class ChartComponent {
     public options$ = this.state$.select("options");
 
     constructor(private binanceCandleService: BinanceCandleService, public state$: ChartState) {
-        binanceCandleService.getCandles({
-            symbol: "BTCUSDT",
-            interval: "1m",
-        }).then(res => {
-            console.log(">>> RES: ", res);
-        })
+        // binanceCandleService.getCandles({
+        //     symbol: "BTCUSDT",
+        //     interval: "1m",
+        // }).then(res => {
+        //     console.log(">>> RES: ", res);
+        // })
 
-        state$.set({tokenPair: BinanceTokenPair.BTCUSDT, interval: "1m"})
+        // state$.set({tokenPair: BinanceTokenPair.BTCUSDT, interval: "1m", dataInterval: undefined})
 
         state$.select("options").subscribe(val => {
             console.log(">>> OPTS: ", val);

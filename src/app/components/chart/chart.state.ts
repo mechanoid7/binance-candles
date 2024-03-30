@@ -1,13 +1,19 @@
 import {Injectable} from "@angular/core";
 import {RxState} from "@rx-angular/state";
-import {CandleChartInterval_LT} from "binance-api-node";
+import {
+    CandleChartInterval_LT,
+    CandlesOptions,
+} from "binance-api-node";
 import * as Highcharts from "highcharts/highstock";
 import {
     combineLatest,
     switchMap,
 } from "rxjs";
 import {BinanceCandleService} from "../../services/binance-candle.service";
-import {BinanceTokenPair} from "./chart.models";
+import {
+    BinanceTokenPair,
+    DataInterval,
+} from "./chart.models";
 import {
     convertCandleChartData2HighchartsCandlesData,
     generateRandomMarkers,
@@ -17,7 +23,14 @@ interface State {
     options: Highcharts.Options,
     tokenPair: BinanceTokenPair,
     interval: CandleChartInterval_LT,
+    dataInterval: DataInterval,
 }
+
+const initValues: Partial<State> = {
+    tokenPair: BinanceTokenPair.BTCUSDT,
+    interval: "1M",
+    dataInterval: {startTime: undefined, endTime: undefined},
+};
 
 @Injectable()
 export class ChartState extends RxState<State> {
@@ -26,15 +39,18 @@ export class ChartState extends RxState<State> {
         this.connect("options", combineLatest([
                 this.select("tokenPair"),
                 this.select("interval"),
-            ]).pipe(switchMap(([tokenPair, interval]) =>
-                binanceCandleService.getCandles({
+                this.select("dataInterval"),
+            ]).pipe(switchMap(([tokenPair, interval, dataInterval]) => {
+                const options: CandlesOptions = {
                     symbol: tokenPair,
                     interval,
-                }),
-            )),
+                };
+                dataInterval.startTime && (options["startTime"] = dataInterval.startTime);
+                dataInterval.endTime && (options["endTime"] = dataInterval.endTime);
+                return binanceCandleService.getCandles(options);
+            })),
             (oldState, candleChartData) => ({
                 title: {text: "Binance Candles"},
-                // subtitle: {text: tokenPair},
                 chart: {
                     events: {
                         load: () => {
@@ -86,7 +102,7 @@ export class ChartState extends RxState<State> {
                 plotOptions: {
                     series: {
                         // pointStart: Date.now(),
-                        pointInterval: 86400000, // 1 day
+                        // pointInterval: 86400000, // 1 day
                         dataGrouping: {
                             enabled: false,
                         },
@@ -115,5 +131,7 @@ export class ChartState extends RxState<State> {
                     },
                 ],
             }));
+
+        this.set(initValues);
     }
 }

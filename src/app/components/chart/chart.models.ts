@@ -24,3 +24,8 @@ export interface CandleMarkerCustomData {
     volume: string,
     signalType: "Buy" | "Sell",
 }
+
+export interface DataInterval {
+    startTime?: number
+    endTime?: number
+}
