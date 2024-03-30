@@ -8,7 +8,9 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "build:lib": "ng build binance-candles-lib",
-        "publish": "cd ./dist/@mechanoid7/binance-candles-lib && npm pack && npm publish --access=public"
+        "pack": "cd ./dist/@mechanoid7/binance-candles-lib && npm pack",
+        "publish": "cd ./dist/@mechanoid7/binance-candles-lib && npm publish --access=public",
+        "cd": "npm run build:lib && npm run pack && npm run publish"
     },
     "private": true,
     "dependencies": {
@@ -36,6 +38,7 @@
         "@angular/cli": "^17.3.2",
         "@angular/compiler-cli": "^17.3.0",
         "@types/jasmine": "~5.1.0",
+        "@types/node": "^20.12.2",
         "jasmine-core": "~5.1.0",
         "karma": "~6.4.0",
         "karma-chrome-launcher": "~3.2.0",

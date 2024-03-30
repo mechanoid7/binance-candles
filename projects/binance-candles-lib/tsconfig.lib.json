@@ -6,7 +6,6 @@
         "declaration": true,
         "declarationMap": true,
         "inlineSources": true,
-        "types": [],
         "paths": {
             "@mechanoid7/binance-candles-lib/*": [
                 "projects/binance-candles-lib/*",

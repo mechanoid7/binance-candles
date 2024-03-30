@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {RouterOutlet} from "@angular/router";
-import {ChartComponent} from "@mechanoid7/binance-candles-lib/src/lib";
+import {ChartComponent} from "@mechanoid7/binance-candles-lib";
 
 @Component({
     selector: "app-root",

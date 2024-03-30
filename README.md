@@ -4,6 +4,26 @@
 
 Run `npm i @mechanoid7/binance-candles-lib` to install package to your project
 
+## Use Scenarios
+
+<details><summary>Change Token Pair</summary>
+
+![Change Token Pair](/src/assets/images/docs/change-token-pair-scenario.gif)
+
+</details>
+
+<details><summary>Signals</summary>
+
+![Check Signals](/src/assets/images/docs/check-signals-scenario.gif)
+
+</details>
+
+<details><summary>Zoom</summary>
+
+![Zoom](/src/assets/images/docs/zoom-scenario.gif)
+
+</details>
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

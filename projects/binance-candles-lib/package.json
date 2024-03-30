@@ -1,7 +1,7 @@
 {
     "name": "@mechanoid7/binance-candles-lib",
     "author": "Nikita Vostrykov",
-    "version": "0.9.1",
+    "version": "0.9.4",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/mechanoid7/binance-candles.git"

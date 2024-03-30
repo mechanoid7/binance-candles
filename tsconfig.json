@@ -13,6 +13,7 @@
                 "projects/binance-candles-lib"
             ]
         },
+        "types": ["node"],
         "outDir": "./dist/out-tsc",
         "strict": true,
         "noImplicitOverride": true,
