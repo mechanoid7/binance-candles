@@ -1,6 +1,6 @@
 <mat-form-field class="app-highchart-token-selector">
     <mat-label>Token pair</mat-label>
-    <mat-select [(value)]="selectedPair.value" (selectionChange)="selectPair($event.value)">
+    <mat-select [value]="selectedPair.value" (selectionChange)="selectPair($event.value)">
         <mat-option *ngFor="let pair of tokenPairs" [value]="pair.value">{{pair.viewValue}}</mat-option>
     </mat-select>
 </mat-form-field>
