@@ -194,6 +194,7 @@ export class ChartComponent {
 
     saveInstance(chartInstance: Highcharts.Chart) {
         this.chartInstance = chartInstance;
+        this.state$.set({chartInstance})
         console.log(">>> chartInstance: ", chartInstance);
     }
 }
