@@ -77,6 +77,7 @@ export class ChartState extends RxState<State> {
                         afterSetExtremes: event => this.handleInterval(event.min, event.max),
                     },
                 },
+                // chart: {height: "100%", width: "100%"},
                 rangeSelector: {
                     allButtonsEnabled: true,
                     buttons: [

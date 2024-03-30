@@ -7,7 +7,7 @@ import {ChartComponent} from "./components/chart/chart.component";
   standalone: true,
   imports: [RouterOutlet, ChartComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.less'
 })
 export class AppComponent {
   title = 'binance-candles';

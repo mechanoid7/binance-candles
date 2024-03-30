@@ -1,4 +1,5 @@
 <highcharts-chart *ngIf="options$ | async as options"
+                  class="app-highchart"
                   [Highcharts]="Highcharts"
                   [constructorType]="'stockChart'"
                   [options]="options"

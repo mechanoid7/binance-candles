@@ -18,15 +18,15 @@ HC_customEvents(Highcharts);
 @Component({
     selector: "app-chart",
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         HighchartsChartModule,
         AsyncPipe,
         NgIf,
     ],
-    templateUrl: "./chart.component.html",
+    providers: [ChartState],
     styleUrl: "./chart.component.less",
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [ChartState], // TODO: rm?
+    templateUrl: "./chart.component.html",
 })
 export class ChartComponent {
     public Highcharts: typeof Highcharts = Highcharts;
