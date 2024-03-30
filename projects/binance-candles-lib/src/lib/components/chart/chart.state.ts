@@ -13,7 +13,7 @@ import {
     filter,
     switchMap,
 } from "rxjs";
-import {BinanceCandleService} from "../../services/binance-candle.service";
+import {BinanceCandleService} from "../../index";
 import {
     BinanceTokenPair,
     DataInterval,

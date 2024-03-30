@@ -2,6 +2,17 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@mechanoid7/binance-candles-lib/*": [
+                "projects/binance-candles-lib/*",
+                "projects/binance-candles-lib"
+            ],
+            "@mechanoid7/binance-candles-lib": [
+                "projects/binance-candles-lib/*",
+                "projects/binance-candles-lib"
+            ]
+        },
         "outDir": "./dist/out-tsc",
         "strict": true,
         "noImplicitOverride": true,
