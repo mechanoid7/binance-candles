@@ -11,6 +11,12 @@ export interface HighchartsCandlesData {
 export enum BinanceTokenPair {
     BTCUSDT = "BTCUSDT",
     ETHUSDT = "ETHUSDT",
+    BTCETH = "ETHBTC",
+}
+
+export interface TokenPairSelectorItem {
+    value: string;
+    viewValue: string;
 }
 
 export enum CandleMarkerDirection {

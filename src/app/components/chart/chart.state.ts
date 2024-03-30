@@ -67,17 +67,20 @@ export class ChartState extends RxState<State> {
                     };
                     dataInterval.startTime && (options["startTime"] = dataInterval.startTime);
                     dataInterval.endTime && (options["endTime"] = dataInterval.endTime);
-                    return binanceCandleService.getCandles(options);
+                    return binanceCandleService.getCandles(options).then(candleChartData => ({
+                        candleChartData,
+                        tokenPair,
+                    }));
                 }),
             ),
-            (oldState, candleChartData) => ({
+            (oldState, {candleChartData, tokenPair}) => ({
                 title: {text: "Binance Candles"},
+                subtitle: {text: tokenPair},
                 xAxis: {
                     events: {
                         afterSetExtremes: event => this.handleInterval(event.min, event.max),
                     },
                 },
-                // chart: {height: "100%", width: "100%"},
                 rangeSelector: {
                     allButtonsEnabled: true,
                     buttons: [
@@ -146,7 +149,7 @@ export class ChartState extends RxState<State> {
                         type: "scatter",
                         name: "Signal",
                         animation: false,
-                        data: generateRandomMarkers(candleChartData, 10),
+                        data: generateRandomMarkers(candleChartData, 10, tokenPair === BinanceTokenPair.BTCETH ? 0.001 : 100),
                         tooltip: {
                             headerFormat: "<b>{point.custom.signalType}</b><br>",
                             pointFormat: "Price: {point.custom.price}<br>Volume: {point.custom.volume}<br>Time: {point.custom.time}",
