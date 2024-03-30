@@ -7,6 +7,7 @@ import {
 import * as Highcharts from "highcharts/highstock";
 import {
     combineLatest,
+    debounceTime,
     switchMap,
 } from "rxjs";
 import {BinanceCandleService} from "../../services/binance-candle.service";
@@ -24,6 +25,16 @@ interface State {
     tokenPair: BinanceTokenPair,
     interval: CandleChartInterval_LT,
     dataInterval: DataInterval,
+    currentPoint: {min: number, max: number}
+}
+
+function getDays(ms: number): number {
+    return ms / 86400000;
+}
+
+enum Times {
+    DAY = 86400000,
+    WEEK = 604800000,
 }
 
 const initValues: Partial<State> = {
@@ -34,6 +45,9 @@ const initValues: Partial<State> = {
 
 @Injectable()
 export class ChartState extends RxState<State> {
+
+    private loaded = false;
+
     constructor(private binanceCandleService: BinanceCandleService) {
         super();
         this.connect("options", combineLatest([
@@ -51,6 +65,48 @@ export class ChartState extends RxState<State> {
             })),
             (oldState, candleChartData) => ({
                 title: {text: "Binance Candles"},
+                xAxis: {
+                    events: {
+                        pointBreakOut: (e) => {
+                            console.log(">>> pointBreakOut: ", e);
+                        },
+                        afterSetExtremes: (event) => {
+                            console.log(">>> setExtremes: ", event);
+                            const daysDiff = getDays(Math.round(event.max) - Math.round(event.min));
+                            if (daysDiff < 0.5) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "1m"});
+                            } else if(daysDiff < 1) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "5m"});
+                            } else if(daysDiff < 3) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "15m"});
+                            }else if(daysDiff < 7) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "1h"});
+                            }                            else if(daysDiff < 15) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "2h"});
+                            }else if(daysDiff < 30) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "4h"});
+                            }                            else if(daysDiff < 45) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "8h"});
+                            }else if(daysDiff < 90) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "12h"});
+                            }else if(daysDiff < 180) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "1d"});
+                            }else if(daysDiff < 600) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "3d"});
+                            }
+                            else if(daysDiff < 3600) {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "1w"});
+                            }else {
+                                !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}, interval: "1m"});
+                            }
+
+                            // !this.loaded && this.set({dataInterval: {startTime: Math.round(event.min), endTime: Math.round(event.max)}});
+                            this.loaded = true;
+
+                            setTimeout(() => this.loaded = false, 800)
+                        },
+                    },
+                },
                 chart: {
                     events: {
                         load: () => {
@@ -67,29 +123,58 @@ export class ChartState extends RxState<State> {
                 rangeSelector: {
                     allButtonsEnabled: true,
                     buttons: [
+                        // {
+                        //     type: "all",
+                        //     text: "All",
+                        //     events: {
+                        //         click: (event) => {
+                        //             console.log(">>> click ALL: ", event);
+                        //         },
+                        //     },
+                        // },
                         {
-                            type: "all",
-                            text: "All",
-                            events: {
-                                click: (event) => {
-                                    console.log(">>> click ALL: ", event);
-                                },
-                            },
+                            type: "year",
+                            count: 10,
+                            text: "10Y",
+                            // events: {
+                            //     click: (event) => {
+                            //         console.log(">>> click ALL: ", event);
+                            //     },
+                            // },
                         },
                         {
                             type: "year",
                             count: 1,
                             text: "1Y",
+                            // events: {
+                            //     click: (event) => {
+                            //         console.log(">>> click ALL: ", event);
+                            //     },
+                            // },
                         },
                         {
                             type: "month",
                             count: 6,
                             text: "6M",
+                            // events: {
+                            //     click: (event: ClickButtonEvent) => {
+                            //         console.log(">>> click ALL: ", event);
+                            //     },
+                            // },
                         },
                         {
                             type: "month",
                             count: 1,
                             text: "1M",
+                            events: {
+                                click: (event) => {
+                                    console.log(">>> click 1M: ", event);
+
+                                    // const lookCenterX = (event as ClickButtonEvent).xAxis[1].value - (event as ClickButtonEvent).xAxis[0].value;
+                                    //
+                                    // this.set({dataInterval: {startTime: lookCenterX - 15*24*60*60*100, endTime: lookCenterX + 15*24*60*60*100}, interval: "1d"})
+                                },
+                            },
                         },
                         {
                             type: "day",

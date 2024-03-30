@@ -19,13 +19,18 @@ export enum CandleMarkerDirection {
 }
 
 export interface CandleMarkerCustomData {
-    time: string,
-    price: string,
-    volume: string,
-    signalType: "Buy" | "Sell",
+    time: string;
+    price: string;
+    volume: string;
+    signalType: "Buy" | "Sell";
 }
 
 export interface DataInterval {
-    startTime?: number
-    endTime?: number
+    startTime?: number;
+    endTime?: number;
+}
+
+export interface ClickButtonEvent extends Event {
+    xAxis: {value: number}[];
+    yAxis: {value: number}[];
 }
