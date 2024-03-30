@@ -1,8 +1,6 @@
 <highcharts-chart *ngIf="options$ | async as options"
                   [Highcharts]="Highcharts"
-                  [callbackFunction]="callback"
                   [constructorType]="'stockChart'"
                   [options]="options"
-                  [(update)]="updateDemo2"
                   (chartInstance)="saveInstance($event)"
 ></highcharts-chart>
