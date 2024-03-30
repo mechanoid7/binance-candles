@@ -13,5 +13,4 @@ import {ChartComponent} from "@mechanoid7/binance-candles-lib/src/lib";
     styleUrl: "./app.component.less",
 })
 export class AppComponent {
-    title = "binance-candles";
 }

@@ -1,6 +1,8 @@
 # BinanceCandles
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.2.
+## Install
+
+Run `npm i @mechanoid7/binance-candles-lib` to install package to your project
 
 ## Development server
 

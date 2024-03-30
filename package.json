@@ -1,6 +1,6 @@
 {
     "name": "binance-candles",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
@@ -8,7 +8,7 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "build:lib": "ng build binance-candles-lib",
-        "publish": "cd ./dist/binance-candles-lib && npm publish"
+        "publish": "cd ./dist/@mechanoid7/binance-candles-lib && npm pack && npm publish --access=public"
     },
     "private": true,
     "dependencies": {
