@@ -9,11 +9,18 @@ export interface HighchartsCandlesData {
 }
 
 export enum BinanceTokenPair {
-    BTCUSDT="BTCUSDT",
-    ETHUSDT="ETHUSDT",
+    BTCUSDT = "BTCUSDT",
+    ETHUSDT = "ETHUSDT",
 }
 
 export enum CandleMarkerDirection {
     UP,
     DOWN,
+}
+
+export interface CandleMarkerCustomData {
+    time: string,
+    price: string,
+    volume: string,
+    signalType: "Buy" | "Sell",
 }

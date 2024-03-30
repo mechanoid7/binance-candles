@@ -1,6 +1,8 @@
+import {formatDate} from "@angular/common";
 import {CandleChartResult} from "binance-api-node";
 import * as Highcharts from "highcharts/highstock";
 import {
+    CandleMarkerCustomData,
     CandleMarkerDirection,
     HighchartsCandlesData,
 } from "./chart.models";
@@ -15,7 +17,7 @@ export function convertCandleChartData2HighchartsCandlesData(chartResults: Candl
     }));
 }
 
-export function generateRandomMarkers(chartResults: CandleChartResult[], count: number, offset: number = 50, size: number = 5): Highcharts.PointOptionsObject[] {
+export function generateRandomMarkers(chartResults: CandleChartResult[], count: number, offset: number = 100, size: number = 5): Highcharts.PointOptionsObject[] {
     const getRandomValue = () => Math.random();
     const markers: Highcharts.PointOptionsObject[] = [];
 
@@ -27,14 +29,20 @@ export function generateRandomMarkers(chartResults: CandleChartResult[], count: 
             y: direction === CandleMarkerDirection.UP
                 ? Number(chartData.low) - offset
                 : Number(chartData.high) + offset,
-
-            // options: {customProperty: "123"},
+            custom: <CandleMarkerCustomData>{
+                price: "$" + Number(chartData.open).toFixed(2),
+                volume: `\$${(20_000 * getRandomValue()).toFixed(2)}`,
+                time: formatDate(new Date(chartData.openTime), "YYYY-MM-dd HH:mm:ss", "en-US"),
+                signalType: direction === CandleMarkerDirection.UP
+                    ? "Buy"
+                    : "Sell",
+            },
             marker: {
                 symbol: direction === CandleMarkerDirection.UP ? "triangle" : "triangle-down",
                 fillColor: direction === CandleMarkerDirection.UP ? "green" : "red",
                 radius: size,
             },
-        })
+        });
     }
 
     return markers;

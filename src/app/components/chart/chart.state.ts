@@ -30,7 +30,7 @@ export class ChartState extends RxState<State> {
                 binanceCandleService.getCandles({
                     symbol: tokenPair,
                     interval,
-                })
+                }),
             )),
             (oldState, candleChartData) => ({
                 title: {text: "Binance Candles"},
@@ -49,6 +49,7 @@ export class ChartState extends RxState<State> {
                     },
                 },
                 rangeSelector: {
+                    allButtonsEnabled: true,
                     buttons: [
                         {
                             type: "all",
@@ -108,8 +109,8 @@ export class ChartState extends RxState<State> {
                         animation: false,
                         data: generateRandomMarkers(candleChartData, 10),
                         tooltip: {
-                            headerFormat: "<b>{series.name}</b><br>",
-                            pointFormat: "First: {point.x}, Second: {point.y}, Third: {point.contact_notes}",
+                            headerFormat: "<b>{point.custom.signalType}</b><br>",
+                            pointFormat: "Price: {point.custom.price}<br>Volume: {point.custom.volume}<br>Time: {point.custom.time}",
                         },
                     },
                 ],
