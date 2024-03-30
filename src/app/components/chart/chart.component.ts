@@ -1,13 +1,18 @@
 import {
+    AsyncPipe,
+    NgIf,
+} from "@angular/common";
+import {
     ChangeDetectionStrategy,
     Component,
 } from "@angular/core";
-import {CandleChartInterval_LT} from "binance-api-node";
 import {HighchartsChartModule} from "highcharts-angular";
 import HC_customEvents from "highcharts-custom-events";
 import * as Highcharts from "highcharts/highstock";
 import HC_stock from "highcharts/modules/stock";
 import {BinanceCandleService} from "../../services/binance-candle.service";
+import {BinanceTokenPair} from "./chart.models";
+import {ChartState} from "./chart.state";
 
 HC_stock(Highcharts);
 HC_customEvents(Highcharts);
@@ -39,15 +44,34 @@ function addSignal(arg: any) {
     // });
 }
 
+// | '1m'
+// | '3m'
+// | '5m'
+// | '15m'
+// | '30m'
+// | '1h'
+// | '2h'
+// | '4h'
+// | '6h'
+// | '8h'
+// | '12h'
+// | '1d'
+// | '3d'
+// | '1w'
+// | '1M'
+
 @Component({
     selector: "app-chart",
     standalone: true,
     imports: [
         HighchartsChartModule,
+        AsyncPipe,
+        NgIf,
     ],
     templateUrl: "./chart.component.html",
     styleUrl: "./chart.component.less",
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [ChartState], // TODO: rm?
 })
 export class ChartComponent {
 
@@ -64,18 +88,7 @@ export class ChartComponent {
         chart: {
             events: {
                 load: () => {
-                    // const chart = this.charts[0];
-                    // const series = chart.hcOptions.series;
                     console.log(">>> LOAD");
-                    // addSignal({
-                    //     // @ts-ignore
-                    //     series: series[1], // Scatter series
-                    //     point: data[2], // Choose a point where you would like to append a triangle
-                    //     direction: "up", // 'triangle' or 'triangle-down'
-                    //     size: 4,
-                    //     triangleOffset: 5, // Choose how far shoud a triangle be from candlestick
-                    // });
-                    // console.log(">>> AFTER LOAD: ", this.charts[0].hcOptions.series);
                 },
                 render: (event) => {
                     console.log(">>> render: ", event);
@@ -83,14 +96,41 @@ export class ChartComponent {
                 redraw: (event) => { // THATS
                     console.log(">>> redraw: ", event);
                 },
-                click: (event) => {
-                    console.log(">>> click: ", event);
-                },
             },
+        },
+        rangeSelector: {
+            buttons: [
+                {
+                    type: 'all',
+                    text: 'All',
+                    events: {
+                        click: (event) => {
+                            console.log(">>> click ALL: ", event);
+                        },
+                    }
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1Y'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6M'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1M'
+                }, {
+                    type: 'day',
+                    count: 1,
+                    text: '1D'
+                }
+            ],
+            selected : 0 // All
         },
         plotOptions: {
             series: {
-                pointStart: Date.now(),
+                // pointStart: Date.now(),
                 pointInterval: 86400000, // 1 day
                 dataGrouping: {
                     enabled: false,
@@ -135,85 +175,22 @@ export class ChartComponent {
         console.log("some variables: ", chart);
     };
 
-    constructor(private binanceCandleService: BinanceCandleService) {
+    public options$ = this.state$.select("options");
+
+    constructor(private binanceCandleService: BinanceCandleService, public state$: ChartState) {
         binanceCandleService.getCandles({
             symbol: "BTCUSDT",
             interval: "1m",
         }).then(res => {
             console.log(">>> RES: ", res);
         })
-    }
 
-// charts = [
-    //     {
-    //         hcOptions: {
-    //             title: {text: this.chartTitle},
-    //             subtitle: {text: "0st data set"},
-    //             chart: {
-    //                 events: {
-    //                     load: () => {
-    //                         const chart = this.charts[0];
-    //                         const series = chart.hcOptions.series;
-    //                         console.log(">>> LOAD");
-    //                         addSignal({
-    //                             // @ts-ignore
-    //                             series: series[1], // Scatter series
-    //                             point: data[2], // Choose a point where you would like to append a triangle
-    //                             direction: "up", // 'triangle' or 'triangle-down'
-    //                             size: 4,
-    //                             triangleOffset: 5, // Choose how far shoud a triangle be from candlestick
-    //                         });
-    //                         console.log(">>> AFTER LOAD: ", this.charts[0].hcOptions.series);
-    //                     },
-    //                     render: (event) => {
-    //                         console.log(">>> render: ", event);
-    //                     },
-    //                     redraw: (event) => { // THATS
-    //                         console.log(">>> redraw: ", event);
-    //                     },
-    //                 },
-    //             },
-    //             plotOptions: {
-    //                 series: {
-    //                     pointStart: Date.now(),
-    //                     pointInterval: 86400000, // 1 day
-    //                     dataGrouping: {
-    //                         enabled: false,
-    //                     },
-    //                 },
-    //             },
-    //             series: [
-    //                 {
-    //                     type: "candlestick",
-    //                     data: data,
-    //                 },
-    //                 {
-    //                     type: "scatter",
-    //                     name: "Signal",
-    //                     animation: false,
-    //                     data: [
-    //                         {
-    //                             "x": 1484231400000,
-    //                             "y": 113.21,
-    //                             "marker": {
-    //                                 "symbol": "triangle",
-    //                                 "fillColor": "green",
-    //                                 "radius": 4,
-    //                             },
-    //                         },
-    //                     ],
-    //                     tooltip: {
-    //                         headerFormat: "<b>{series.name}</b><br>",
-    //                         pointFormat: "First: {point.x}, Second: {point.y}, Third: {point.contact_notes}",
-    //                     },
-    //                 },
-    //             ],
-    //         } as Highcharts.Options,
-    //         hcCallback: (chart: Highcharts.Chart) => {
-    //             console.log("some variables: ", Highcharts, chart, this.charts);
-    //         },
-    //     },
-    // ];
+        state$.set({tokenPair: BinanceTokenPair.BTCUSDT, interval: "1m"})
+
+        state$.select("options").subscribe(val => {
+            console.log(">>> OPTS: ", val);
+        })
+    }
 
     saveInstance(chartInstance: Highcharts.Chart) {
         this.chartInstance = chartInstance;
