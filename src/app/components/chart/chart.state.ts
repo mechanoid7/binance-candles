@@ -8,7 +8,10 @@ import {
 } from "rxjs";
 import {BinanceCandleService} from "../../services/binance-candle.service";
 import {BinanceTokenPair} from "./chart.models";
-import {convertCandleChartData2HighchartsCandlesData} from "./chart.utils";
+import {
+    convertCandleChartData2HighchartsCandlesData,
+    generateRandomMarkers,
+} from "./chart.utils";
 
 interface State {
     options: Highcharts.Options,
@@ -103,17 +106,7 @@ export class ChartState extends RxState<State> {
                         type: "scatter",
                         name: "Signal",
                         animation: false,
-                        data: [
-                            {
-                                x: 1484231400000,
-                                y: 113.21,
-                                marker: {
-                                    symbol: "triangle",
-                                    fillColor: "green",
-                                    radius: 4,
-                                },
-                            },
-                        ],
+                        data: generateRandomMarkers(candleChartData, 10),
                         tooltip: {
                             headerFormat: "<b>{series.name}</b><br>",
                             pointFormat: "First: {point.x}, Second: {point.y}, Third: {point.contact_notes}",

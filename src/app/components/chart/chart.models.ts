@@ -12,3 +12,8 @@ export enum BinanceTokenPair {
     BTCUSDT="BTCUSDT",
     ETHUSDT="ETHUSDT",
 }
+
+export enum CandleMarkerDirection {
+    UP,
+    DOWN,
+}
