@@ -47,3 +47,13 @@ export function generateRandomMarkers(chartResults: CandleChartResult[], count: 
 
     return markers;
 }
+
+const msInDay = 86_400_000;
+
+export function getDays(ms: number): number {
+    return ms / msInDay;
+}
+
+export function getMs(days: number): number {
+    return days * msInDay;
+}
