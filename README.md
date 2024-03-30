@@ -21,10 +21,11 @@ Overall, the Candlestick Chart with Trading Signals Web Application offers trade
 comprehensive toolset for visualizing market data, identifying trading opportunities, 
 and enhancing decision-making processes in the dynamic world of financial markets.
 
-
 ## Install
 
 Run `npm i @mechanoid7/binance-candles-lib` to install package to your project
+
+> https://www.npmjs.com/package/@mechanoid7/binance-candles-lib
 
 ## Use Scenarios
 
