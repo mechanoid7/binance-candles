@@ -1,7 +1,5 @@
 # BinanceCandlesLib
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
-
 ## Code scaffolding
 
 Run `ng generate component component-name --project binance-candles-lib` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project binance-candles-lib`.
